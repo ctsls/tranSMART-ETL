@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>stream_lookup</name>
+    <name>pivot_metabolomic_file</name>
     <description/>
     <extended_description/>
     <trans_version/>
     <trans_type>Normal</trans_type>
+    <trans_status>0</trans_status>
     <directory>&#47;</directory>
     <parameters>
     </parameters>
@@ -61,77 +62,16 @@
     <clusterschemas>
     </clusterschemas>
   <created_user>-</created_user>
-  <created_date>2013&#47;12&#47;06 11:13:38.767</created_date>
+  <created_date>2012&#47;08&#47;03 14:56:19.311</created_date>
   <modified_user>-</modified_user>
-  <modified_date>2013&#47;12&#47;06 11:13:38.767</modified_date>
+  <modified_date>2012&#47;08&#47;03 14:56:19.311</modified_date>
   </info>
   <notepads>
   </notepads>
   <order>
-  <hop> <from>Check for start and end values </from><to>Write to log</to><enabled>Y</enabled> </hop>  <hop> <from>Write to log</from><to>Abort</to><enabled>Y</enabled> </hop>  <hop> <from>Check for start and end values </from><to>Set Variables</to><enabled>Y</enabled> </hop>  <hop> <from>Write to log 2</from><to>Check for start and end values </to><enabled>Y</enabled> </hop>  <hop> <from>Text file input</from><to>Write to log 3</to><enabled>Y</enabled> </hop>  <hop> <from>Get Variables 2</from><to>Write to log 4</to><enabled>Y</enabled> </hop>  <hop> <from>Write to log 3</from><to>Stream lookup</to><enabled>Y</enabled> </hop>  <hop> <from>Stream lookup</from><to>Write to log 2</to><enabled>Y</enabled> </hop>  <hop> <from>Write to log 4</from><to>Stream lookup</to><enabled>Y</enabled> </hop>  </order>
+  <hop> <from>User Defined Java Class</from><to>Text file output</to><enabled>Y</enabled> </hop>  <hop> <from>Text file input</from><to>Get Variables</to><enabled>Y</enabled> </hop>  <hop> <from>Get Variables</from><to>User Defined Java Class</to><enabled>Y</enabled> </hop>  </order>
   <step>
-    <name>Abort</name>
-    <type>Abort</type>
-    <description/>
-    <distribute>Y</distribute>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-      <row_threshold>0</row_threshold>
-      <message/>
-      <always_log_rows>Y</always_log_rows>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>500</xloc>
-      <yloc>378</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>Check for start and end values </name>
-    <type>FilterRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-<send_true_to>Write to log</send_true_to>
-<send_false_to>Set Variables</send_false_to>
-    <compare>
-<condition>
- <negated>N</negated>
- <conditions>
-  <condition>
-   <negated>N</negated>
-   <leftvalue>Intensity_Values_Start</leftvalue>
-   <function>IS NULL</function>
-   <rightvalue/>
-   </condition>
-  <condition>
-   <negated>N</negated>
-   <operator>AND</operator>
-   <leftvalue>Intensity_Values_End</leftvalue>
-   <function>IS NULL</function>
-   <rightvalue/>
-   </condition>
-  </conditions>
- </condition>
-    </compare>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>509</xloc>
-      <yloc>129</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>Get Variables 2</name>
+    <name>Get Variables</name>
     <type>GetVariable</type>
     <description/>
     <distribute>Y</distribute>
@@ -142,8 +82,8 @@
            </partitioning>
     <fields>
       <field>
-        <name>DATA_LOCATION</name>
-        <variable>${DATA_LOCATION}</variable>
+        <name>START_VALUE</name>
+        <variable>${START_VALUE}</variable>
         <type>String</type>
         <format/>
         <currency/>
@@ -154,20 +94,8 @@
         <trim_type>none</trim_type>
       </field>
       <field>
-        <name>COLUMN_MAPPING_FILE</name>
-        <variable>${COLUMN_MAPPING_FILE}</variable>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>check</name>
-        <variable>${FILENAME}</variable>
+        <name>END_VALUE</name>
+        <variable>${END_VALUE}</variable>
         <type>String</type>
         <format/>
         <currency/>
@@ -180,41 +108,8 @@
     </fields>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>106</xloc>
-      <yloc>22</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>Set Variables</name>
-    <type>SetVariable</type>
-    <description/>
-    <distribute>Y</distribute>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <fields>
-      <field>
-        <field_name>Intensity_Values_Start</field_name>
-        <variable_name>START_VALUE</variable_name>
-        <variable_type>JVM</variable_type>
-        <default_value/>
-        </field>
-      <field>
-        <field_name>Intensity_Values_End</field_name>
-        <variable_name>END_VALUE</variable_name>
-        <variable_type>JVM</variable_type>
-        <default_value/>
-        </field>
-      </fields>
-    <use_formatting>Y</use_formatting>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>633</xloc>
-      <yloc>144</yloc>
+      <xloc>300</xloc>
+      <yloc>184</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -223,7 +118,7 @@
     <name>Text file input</name>
     <type>TextFileInput</type>
     <description/>
-    <distribute>Y</distribute>
+    <distribute>N</distribute>
     <copies>1</copies>
          <partitioning>
            <method>none</method>
@@ -233,11 +128,11 @@
     <passing_through_fields>N</passing_through_fields>
     <accept_field/>
     <accept_stepname/>
-    <separator>	</separator>
-    <enclosure>&quot;</enclosure>
+    <separator>\</separator>
+    <enclosure/>
     <enclosure_breaks>N</enclosure_breaks>
     <escapechar/>
-    <header>Y</header>
+    <header>N</header>
     <nr_headerlines>1</nr_headerlines>
     <footer>N</footer>
     <nr_footerlines>1</nr_footerlines>
@@ -256,7 +151,7 @@
     <encoding/>
     <add_to_result_filenames>Y</add_to_result_filenames>
     <file>
-      <name>${DATA_LOCATION}&#47;${COLUMN_MAPPING_FILE}</name>
+      <name>${DATA_LOCATION}&#47;${FILENAME}</name>
       <filemask/>
       <exclude_filemask/>
       <file_required>N</file_required>
@@ -268,7 +163,7 @@
     </filters>
     <fields>
       <field>
-        <name>Filename</name>
+        <name>all_cols</name>
         <type>String</type>
         <format/>
         <currency/>
@@ -277,52 +172,7 @@
         <nullif/>
         <ifnull/>
         <position>-1</position>
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Biochemical_Identifier</name>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif/>
-        <ifnull/>
-        <position>-1</position>
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Intensity_Values_Start</name>
-        <type>Number</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif/>
-        <ifnull/>
-        <position>-1</position>
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Intensity_Values_End</name>
-        <type>Number</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif/>
-        <ifnull/>
-        <position>-1</position>
-        <length>-1</length>
+        <length>5000</length>
         <precision>-1</precision>
         <trim_type>none</trim_type>
         <repeat>N</repeat>
@@ -344,7 +194,7 @@
     <line_number_files_destination_directory/>
     <line_number_files_extension>line</line_number_files_extension>
     <date_format_lenient>Y</date_format_lenient>
-    <date_format_locale>en_US</date_format_locale>
+    <date_format_locale>fr_FR</date_format_locale>
     <shortFileFieldName/>
     <pathFieldName/>
     <hiddenFieldName/>
@@ -355,15 +205,15 @@
     <sizeFieldName/>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>72</xloc>
-      <yloc>155</yloc>
+      <xloc>88</xloc>
+      <yloc>189</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
 
   <step>
-    <name>Write to log</name>
-    <type>WriteToLog</type>
+    <name>Text file output</name>
+    <type>TextFileOutput</type>
     <description/>
     <distribute>Y</distribute>
     <copies>1</copies>
@@ -371,146 +221,179 @@
            <method>none</method>
            <schema_name/>
            </partitioning>
-      <loglevel>log_level_basic</loglevel>
-      <displayHeader>Y</displayHeader>
-      <logmessage>****** START and END VALUES not found  ********</logmessage>
+    <separator>	</separator>
+    <enclosure/>
+    <enclosure_forced>N</enclosure_forced>
+    <enclosure_fix_disabled>N</enclosure_fix_disabled>
+    <header>Y</header>
+    <footer>N</footer>
+    <format>UNIX</format>
+    <compression>None</compression>
+    <encoding/>
+    <endedLine/>
+    <fileNameInField>N</fileNameInField>
+    <fileNameField/>
+    <create_parent_folder>N</create_parent_folder>
+    <file>
+      <name>${SORT_DIR}&#47;${FILENAME_NO_EXT}_pivot</name>
+      <is_command>N</is_command>
+      <servlet_output>N</servlet_output>
+      <do_not_open_new_file_init>N</do_not_open_new_file_init>
+      <extention>txt</extention>
+      <append>N</append>
+      <split>N</split>
+      <haspartno>N</haspartno>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <SpecifyFormat>N</SpecifyFormat>
+      <date_time_format/>
+      <add_to_result_filenames>Y</add_to_result_filenames>
+      <pad>N</pad>
+      <fast_dump>N</fast_dump>
+      <splitevery>0</splitevery>
+    </file>
     <fields>
       <field>
-        <name>check</name>
-        </field>
-      </fields>
+        <name>Probe set ID</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>Field 1</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>Field 2</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+    </fields>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>495</xloc>
-      <yloc>268</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>Write to log 2</name>
-    <type>WriteToLog</type>
-    <description/>
-    <distribute>Y</distribute>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-      <loglevel>log_level_basic</loglevel>
-      <displayHeader>Y</displayHeader>
-      <logmessage/>
-    <fields>
-      <field>
-        <name>Intensity_Values_Start</name>
-        </field>
-      <field>
-        <name>Intensity_Values_End</name>
-        </field>
-      </fields>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>384</xloc>
-      <yloc>102</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>Write to log 3</name>
-    <type>WriteToLog</type>
-    <description/>
-    <distribute>Y</distribute>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-      <loglevel>log_level_basic</loglevel>
-      <displayHeader>Y</displayHeader>
-      <logmessage>${DATA_LOCATION}&#47;${COLUMN_MAPPING_FILE}</logmessage>
-    <fields>
-      <field>
-        <name>Intensity_Values_Start</name>
-        </field>
-      <field>
-        <name>Intensity_Values_End</name>
-        </field>
-      </fields>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>172</xloc>
+      <xloc>815</xloc>
       <yloc>156</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
 
   <step>
-    <name>Write to log 4</name>
-    <type>WriteToLog</type>
+    <name>User Defined Java Class</name>
+    <type>UserDefinedJavaClass</type>
     <description/>
-    <distribute>Y</distribute>
+    <distribute>N</distribute>
     <copies>1</copies>
          <partitioning>
            <method>none</method>
            <schema_name/>
            </partitioning>
-      <loglevel>log_level_basic</loglevel>
-      <displayHeader>Y</displayHeader>
-      <logmessage/>
-    <fields>
-      <field>
-        <name>COLUMN_MAPPING_FILE</name>
-        </field>
-      <field>
-        <name>DATA_LOCATION</name>
-        </field>
-      </fields>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>207</xloc>
-      <yloc>82</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
 
-  <step>
-    <name>Stream lookup</name>
-    <type>StreamLookup</type>
-    <description/>
-    <distribute>Y</distribute>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <from>Write to log 3</from>
-    <input_sorted>N</input_sorted>
-    <preserve_memory>Y</preserve_memory>
-    <sorted_list>N</sorted_list>
-    <integer_pair>N</integer_pair>
-    <lookup>
-      <key>
-        <name>check</name>
-        <field>Filename</field>
-      </key>
-      <value>
-        <name>Intensity_Values_Start</name>
-        <rename>Intensity_Values_Start</rename>
-        <default>0</default>
-        <type>Number</type>
-      </value>
-      <value>
-        <name>Intensity_Values_End</name>
-        <rename>Intensity_Values_End</rename>
-        <default>0</default>
-        <type>Number</type>
-      </value>
-    </lookup>
-     <cluster_schema/>
+    <definitions>
+        <definition>
+        <class_type>TRANSFORM_CLASS</class_type>
+
+        <class_name>Processor</class_name>
+
+        <class_source><![CDATA[static long rownum = 0;
+static RowMetaInterface inputRowMeta;
+static long numFields;
+static String[] samples;
+public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws KettleException{  
+// get the current row
+	  Object[] r = getRow();
+  // If the row object is null, we are done processing.
+	  if (r == null) {
+	    setOutputDone();
+	    return false;
+	  }
+	  if (first) {
+	    inputRowMeta=getInputRowMeta();
+	    samples=inputRowMeta.getString(r, 0).split("\t");
+		first=false;
+	}	
+	else{
+		String[] columns=inputRowMeta.getString(r, 0).split("\t", -1);
+
+			String startStr = get(Fields.In, "START_VALUE").getString(r);
+			String endVal= get(Fields.In, "END_VALUE").getString(r);
+		
+		     Float startFloatVal=Float.parseFloat(startStr);
+             Float endFloatVal=Float.parseFloat(endVal);
+              
+              int startIntVal=startFloatVal.intValue();
+              int endIntVal=endFloatVal.intValue();
+
+
+
+ 		for (int i=startIntVal; i<= endIntVal; i++) {
+		    Object[] outputRow=RowDataUtil.createResizedCopy(r, data.outputRowMeta.size());
+			outputRow[3]=columns[1];
+   			outputRow[4]=samples[i];
+   			outputRow[5]=columns[i];
+   			putRow(data.outputRowMeta, outputRow);
+  		}
+	}
+    return true;
+}]]></class_source>
+        </definition>
+    </definitions>
+    <fields>
+        <field>
+        <field_name>Probe set ID</field_name>
+
+        <field_type>String</field_type>
+
+        <field_length>-1</field_length>
+
+        <field_precision>-1</field_precision>
+
+        </field>
+        <field>
+        <field_name>Field 1</field_name>
+
+        <field_type>String</field_type>
+
+        <field_length>-1</field_length>
+
+        <field_precision>-1</field_precision>
+
+        </field>
+        <field>
+        <field_name>Field 2</field_name>
+
+        <field_type>String</field_type>
+
+        <field_length>-1</field_length>
+
+        <field_precision>-1</field_precision>
+
+        </field>
+    </fields><clear_result_fields>N</clear_result_fields>
+<info_steps></info_steps><target_steps></target_steps><usage_parameters></usage_parameters>     <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>302</xloc>
-      <yloc>168</yloc>
+      <xloc>564</xloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
