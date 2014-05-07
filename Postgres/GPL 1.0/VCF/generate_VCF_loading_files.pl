@@ -59,10 +59,10 @@ while (<IN>) {
 }
 close IN;
 
-our $ETL_date = `date +FORMAT=%d-%b-%Y`;
+our $ETL_date = `date +FORMAT=%Y-%m-%d`;
 $ETL_date =~ s/FORMAT=//;
 $ETL_date =~ s/\n//;
-our $depth_threshhold = 0;	# The depth_treshold is disabled for now
+our $depth_threshhold = 0;	# The depth_threshold is disabled for now
 our $refCount = 0;
 our $altCount = 0;
 our $het = 0;
@@ -290,9 +290,13 @@ chomp;
 				$intVal = $info[$k];
 			} elsif( $type eq "float" ) {
 				$floatVal = $info[$k];
+
 				# if float value has an exponent with 3 digits (i.e. 1e-200) it's probably safe to say it's zero instead
 				# this is added to avoid problems with conversion to double when importing in DB
-				$floatVal =~ s/[0-9](\.[0-9]+)?e-[1-9][0-9]{2}/0/;	
+				$floatVal =~ s/[0-9](\.[0-9]+)?e-[1-9][0-9]{2}/0/;
+
+				# if the floatval is a single ., the value is unknown. Storing NULL instead
+				$floatVal =~ s/^\.$/\\N/;
 			} elsif( $type eq "character" or $type eq "string" ) {
 				$textVal = $info[$k];
 			} else {
